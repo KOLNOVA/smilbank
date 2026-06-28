@@ -38,20 +38,13 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    const totalInvested = investments.reduce((sum: number, inv) => sum + Number(inv.amount), 0);
-    const totalCurrentValue = investments.reduce((sum: number, inv) => sum + Number(inv.currentValue), 0);
+    const totalInvested: number = investments.reduce((sum: number, inv: { amount: any }) => sum + Number(inv.amount), 0);
+    const totalCurrentValue: number = investments.reduce((sum: number, inv: { currentValue: any }) => sum + Number(inv.currentValue), 0);
 
     const recentOperations = await prisma.operation.findMany({
       where: { userId },
       orderBy: { createdAt: "desc" },
       take: 5,
-      select: {
-        id: true,
-        type: true,
-        amount: true,
-        description: true,
-        createdAt: true,
-      },
     });
 
     const upcomingContracts = await prisma.contract.findMany({
@@ -62,12 +55,6 @@ export async function GET(req: NextRequest) {
       },
       orderBy: { endDate: "asc" },
       take: 3,
-      select: {
-        id: true,
-        title: true,
-        reference: true,
-        endDate: true,
-      },
     });
 
     return NextResponse.json({
@@ -96,7 +83,6 @@ export async function GET(req: NextRequest) {
       upcomingContracts,
     });
   } catch (error) {
-    console.error("Dashboard error:", error);
-    return NextResponse.json({ error: "Erreur interne du serveur" }, { status: 500 });
+    return NextResponse.json({ error: "Erreur interne" }, { status: 500 });
   }
 }
