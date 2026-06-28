@@ -1,0 +1,217 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  CLIENT
+}
+
+enum UserStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  LOCKED
+}
+
+model User {
+  id                  String       @id @default(uuid())
+  email               String       @unique
+  password            String
+  firstName           String
+  lastName            String
+  phone               String?
+  role                UserRole     @default(CLIENT)
+  status              UserStatus   @default(ACTIVE)
+  isEmailVerified     Boolean      @default(false)
+  isTwoFactorEnabled  Boolean      @default(true)
+  twoFactorSecret     String?
+  twoFactorCode       String?
+  twoFactorExpires    DateTime?
+  loginAttempts       Int          @default(0)
+  lastLoginAt         DateTime?
+  lastLoginIp         String?
+  refreshTokenHash    String?
+  acceptedCGU         Json?
+  createdAt           DateTime     @default(now())
+  updatedAt           DateTime     @updatedAt
+
+  portfolios     Portfolio[]
+  investments    Investment[]
+  contracts      Contract[]
+  operations     Operation[]
+  documents      Document[]
+  sessions       Session[]
+
+  @@map("users")
+}
+
+model Session {
+  id           String   @id @default(uuid())
+  userId       String
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token        String   @unique
+  expiresAt    DateTime
+  ipAddress    String?
+  userAgent    String?
+  createdAt    DateTime @default(now())
+
+  @@map("sessions")
+}
+
+model Portfolio {
+  id            String       @id @default(uuid())
+  name          String
+  balance       Decimal      @default(0) @db.Decimal(15, 2)
+  totalInvested Decimal      @default(0) @db.Decimal(15, 2)
+  performance   Decimal      @default(0) @db.Decimal(5, 2)
+  currency      String       @default("EUR")
+  isActive      Boolean      @default(true)
+  userId        String
+  user          User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  @@map("portfolios")
+}
+
+enum InvestmentStatus {
+  ACTIVE
+  CLOSED
+  MATURED
+}
+
+enum InvestmentType {
+  BONDS
+  STOCKS
+  REAL_ESTATE
+  FUNDS
+  CRYPTO
+}
+
+model Investment {
+  id           String           @id @default(uuid())
+  name         String
+  type         InvestmentType
+  amount       Decimal          @db.Decimal(15, 2)
+  currentValue Decimal          @default(0) @db.Decimal(15, 2)
+  returnRate   Decimal          @default(0) @db.Decimal(5, 2)
+  status       InvestmentStatus @default(ACTIVE)
+  startDate    DateTime
+  endDate      DateTime?
+  userId       String
+  user         User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+
+  @@map("investments")
+}
+
+enum ContractStatus {
+  ACTIVE
+  EXPIRED
+  TERMINATED
+  PENDING
+}
+
+enum ContractType {
+  CREDIT
+  INSURANCE
+  INVESTMENT
+  SERVICE
+}
+
+model Contract {
+  id          String         @id @default(uuid())
+  reference   String
+  type        ContractType
+  title       String
+  description String         @db.Text
+  status      ContractStatus @default(ACTIVE)
+  startDate   DateTime
+  endDate     DateTime?
+  metadata    Json?
+  userId      String
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  @@map("contracts")
+}
+
+enum OperationType {
+  DEPOSIT
+  WITHDRAWAL
+  INVESTMENT
+  DIVIDEND
+  FEE
+  INTEREST
+  REFUND
+  TRANSFER
+}
+
+model Operation {
+  id            String        @id @default(uuid())
+  type          OperationType
+  amount        Decimal       @db.Decimal(15, 2)
+  description   String
+  balanceBefore Decimal       @db.Decimal(15, 2)
+  balanceAfter  Decimal       @db.Decimal(15, 2)
+  reference     String?
+  userId        String
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt     DateTime      @default(now())
+
+  @@map("operations")
+}
+
+enum DocumentType {
+  CONTRACT
+  INVOICE
+  REPORT
+  STATEMENT
+  TAX
+  OTHER
+}
+
+enum DocumentStatus {
+  PRIVATE
+  SHARED
+  ARCHIVED
+}
+
+model Document {
+  id         String         @id @default(uuid())
+  title      String
+  type       DocumentType
+  fileName   String
+  filePath   String
+  mimeType   String?
+  fileSize   BigInt?
+  status     DocumentStatus @default(PRIVATE)
+  validUntil DateTime?
+  userId     String
+  user       User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt  DateTime       @default(now())
+  updatedAt  DateTime       @updatedAt
+
+  @@map("documents")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String?
+  action     String
+  entity     String?
+  entityId   String?
+  details    Json?
+  ipAddress  String?
+  createdAt  DateTime @default(now())
+
+  @@map("audit_logs")
+}
