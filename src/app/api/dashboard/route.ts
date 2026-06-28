@@ -4,7 +4,6 @@ import { verifyAccessToken, getAccessTokenFromHeader } from "@/lib/auth";
 
 export async function GET(req: NextRequest) {
   try {
-    // Vérifier l'authentification
     const accessToken = getAccessTokenFromHeader(req);
     if (!accessToken) {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
@@ -17,18 +16,15 @@ export async function GET(req: NextRequest) {
 
     const userId = payload.sub;
 
-    // Récupérer le portefeuille principal
     const portfolio = await prisma.portfolio.findFirst({
       where: { userId, isActive: true },
       orderBy: { createdAt: "desc" },
     });
 
-    // Compter les contrats actifs
     const activeContracts = await prisma.contract.count({
       where: { userId, status: "ACTIVE" },
     });
 
-    // Total des investissements
     const investments = await prisma.investment.findMany({
       where: { userId, status: "ACTIVE" },
       select: {
@@ -42,10 +38,9 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    const totalInvested = investments.reduce((sum, inv) => sum + Number(inv.amount), 0);
-    const totalCurrentValue = investments.reduce((sum, inv) => sum + Number(inv.currentValue), 0);
+    const totalInvested = investments.reduce((sum: number, inv) => sum + Number(inv.amount), 0);
+    const totalCurrentValue = investments.reduce((sum: number, inv) => sum + Number(inv.currentValue), 0);
 
-    // Dernières opérations
     const recentOperations = await prisma.operation.findMany({
       where: { userId },
       orderBy: { createdAt: "desc" },
@@ -59,7 +54,6 @@ export async function GET(req: NextRequest) {
       },
     });
 
-    // Contrats à venir (échéances proches)
     const upcomingContracts = await prisma.contract.findMany({
       where: {
         userId,
@@ -94,8 +88,8 @@ export async function GET(req: NextRequest) {
         investmentsCount: investments.length,
         overallReturn:
           totalInvested > 0
-            ? ((totalCurrentValue - totalInvested) / totalInvested * 100).toFixed(2)
-            : 0,
+            ? (((totalCurrentValue - totalInvested) / totalInvested) * 100).toFixed(2)
+            : "0",
       },
       investments,
       recentOperations,
