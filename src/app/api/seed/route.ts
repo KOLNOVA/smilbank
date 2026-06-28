@@ -1,18 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import { PrismaClient } from "@prisma/client";
 import bcrypt from "bcryptjs";
 
-export async function GET(req: NextRequest) {
-  const prisma = new PrismaClient();
+// Utiliser require pour éviter l'erreur TypeScript
+const { PrismaClient } = require("@prisma/client");
+const prisma = new PrismaClient();
 
+export async function GET(req: NextRequest) {
   try {
-    // Vérification avec une clé secrète
     const { searchParams } = new URL(req.url);
     if (searchParams.get("key") !== "smilbank-init-secret-2026") {
       return NextResponse.json({ error: "Non autorisé" }, { status: 401 });
     }
 
-    // Nettoyer les données existantes
+    // Nettoyer
     await prisma.auditLog.deleteMany();
     await prisma.session.deleteMany();
     await prisma.operation.deleteMany();
@@ -50,16 +50,7 @@ export async function GET(req: NextRequest) {
     const clients = [];
     for (const c of clientsData) {
       const client = await prisma.user.create({
-        data: {
-          email: c.email,
-          password,
-          firstName: c.firstName,
-          lastName: c.lastName,
-          role: "CLIENT",
-          status: "ACTIVE",
-          isEmailVerified: true,
-          isTwoFactorEnabled: true,
-        },
+        data: { ...c, password, role: "CLIENT", status: "ACTIVE", isEmailVerified: true, isTwoFactorEnabled: true },
       });
       clients.push(client);
     }
