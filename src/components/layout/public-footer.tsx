@@ -31,7 +31,7 @@ export function PublicFooter() {
           <h5 className="text-white font-semibold mb-3 text-sm">Contact</h5>
           <ul className="space-y-3 text-sm">
             <li>
-              <a href="https://wa.me/33123456789" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-green-400 transition">
+              <a href="https://wa.me/4552737892" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:text-green-400 transition">
                 <WhatsAppIcon size={18} />
                 <span>WhatsApp</span>
               </a>

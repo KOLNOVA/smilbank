@@ -86,7 +86,7 @@ export default function HomePage() {
               <Link href="/connexion"><Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 rounded-full px-10 h-14 text-lg">Espace client</Button></Link>
             </div>
             <div className="flex flex-wrap justify-center gap-6 mt-8 text-white/60 text-sm">
-              <a href="https://wa.me/33123456789" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-green-400 transition">
+              <a href="https://wa.me/4552737892" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:text-green-400 transition">
                 <WhatsAppIcon size={18} /> WhatsApp
               </a>
               <a href="mailto:contact@smilbank.fr" className="flex items-center gap-1 hover:text-accent-400 transition">
