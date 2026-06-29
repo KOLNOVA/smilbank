@@ -31,14 +31,6 @@ export default function AdminUsersPage() {
     finally { setLoading(false); }
   };
 
-  // Recharger un utilisateur spécifique après modification
-  const refreshUser = async (userId: string) => {
-    try {
-      const res = await fetch(`/api/gestion-sb/users/${userId}`, { headers: { Authorization: `Bearer ${accessToken}` } });
-      if (res.ok) setSelectedUser(await res.json());
-    } catch {}
-  };
-
   const handleEdit = async (userId: string) => {
     try {
       const res = await fetch(`/api/gestion-sb/users/${userId}`, { headers: { Authorization: `Bearer ${accessToken}` } });
@@ -47,21 +39,13 @@ export default function AdminUsersPage() {
   };
 
   const handleDelete = async (userId: string, userName: string) => {
-    if (!confirm(`Supprimer définitivement ${userName} ?`)) return;
-    try {
-      const res = await fetch(`/api/gestion-sb/users/${userId}`, { method: "DELETE", headers: { Authorization: `Bearer ${accessToken}` } });
-      if (res.ok) { toast.success("Utilisateur supprimé"); fetchUsers(); }
-      else { const d = await res.json(); toast.error(d.error || "Erreur"); }
-    } catch { toast.error("Erreur"); }
+    if (!confirm(`Supprimer ${userName} ?`)) return;
+    const res = await fetch(`/api/gestion-sb/users/${userId}`, { method: "DELETE", headers: { Authorization: `Bearer ${accessToken}` } });
+    if (res.ok) { toast.success("Supprimé"); fetchUsers(); }
+    else toast.error("Erreur");
   };
 
   if (loading) return <LoadingScreen />;
-
-  const filteredUsers = users.filter((u: any) =>
-    u.firstName.toLowerCase().includes(search.toLowerCase()) ||
-    u.lastName.toLowerCase().includes(search.toLowerCase()) ||
-    u.email.toLowerCase().includes(search.toLowerCase())
-  );
 
   return (
     <div>
@@ -75,21 +59,15 @@ export default function AdminUsersPage() {
       <Card>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
-            <thead><tr className="border-b bg-gray-50 dark:bg-gray-900 text-left text-gray-500 dark:text-gray-400"><th className="p-4">Utilisateur</th><th className="p-4">Rôle</th><th className="p-4">Statut</th><th className="p-4">Portefeuille</th><th className="p-4">Contrats</th><th className="p-4 text-right">Actions</th></tr></thead>
+            <thead><tr className="border-b bg-gray-50 dark:bg-gray-900 text-left text-gray-500 dark:text-gray-400"><th className="p-4">Utilisateur</th><th className="p-4">Rôle</th><th className="p-4">Statut</th><th className="p-4">Portefeuille</th><th className="p-4 text-right">Actions</th></tr></thead>
             <tbody className="divide-y dark:divide-gray-800">
-              {filteredUsers.map((user: any) => (
+              {users.filter((u: any) => u.firstName?.toLowerCase().includes(search.toLowerCase()) || u.email?.toLowerCase().includes(search.toLowerCase())).map((user: any) => (
                 <tr key={user.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
-                  <td className="p-4"><div className="flex items-center gap-3"><div className="w-10 h-10 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-700 dark:text-primary-400 font-bold">{user.firstName[0]}{user.lastName[0]}</div><div><p className="font-medium dark:text-white">{user.firstName} {user.lastName}</p><p className="text-gray-400 text-xs">{user.email}</p></div></div></td>
+                  <td className="p-4"><div className="flex items-center gap-3"><div className="w-10 h-10 rounded-xl bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-700 dark:text-primary-400 font-bold">{user.firstName?.[0]}{user.lastName?.[0]}</div><div><p className="font-medium dark:text-white">{user.firstName} {user.lastName}</p><p className="text-gray-400 text-xs">{user.email}</p></div></div></td>
                   <td className="p-4">{user.role === "SUPER_ADMIN" ? <Badge className="bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300"><Shield size={12} className="mr-1" /> Admin</Badge> : <Badge variant="outline">Client</Badge>}</td>
                   <td className="p-4">{user.status === "ACTIVE" ? <Badge variant="success"><CheckCircle size={12} className="mr-1" /> Actif</Badge> : <Badge variant="outline">{user.status}</Badge>}</td>
                   <td className="p-4 font-medium dark:text-white">{formatCurrency(user.portfolio)}</td>
-                  <td className="p-4">{user.contracts}</td>
-                  <td className="p-4">
-                    <div className="flex justify-end gap-1">
-                      <button onClick={() => handleEdit(user.id)} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400 hover:text-primary-700"><Edit size={16} /></button>
-                      <button onClick={() => handleDelete(user.id, user.firstName)} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400 hover:text-red-600"><Trash2 size={16} /></button>
-                    </div>
-                  </td>
+                  <td className="p-4"><div className="flex justify-end gap-1"><button onClick={() => handleEdit(user.id)} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400 hover:text-primary-700"><Edit size={16} /></button><button onClick={() => handleDelete(user.id, user.firstName)} className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 text-gray-400 hover:text-red-600"><Trash2 size={16} /></button></div></td>
                 </tr>
               ))}
             </tbody>
@@ -98,28 +76,19 @@ export default function AdminUsersPage() {
       </Card>
 
       {showCreateModal && <CreateUserModal onClose={() => setShowCreateModal(false)} onSuccess={() => { setShowCreateModal(false); fetchUsers(); }} accessToken={accessToken!} />}
-      {showEditModal && selectedUser && (
-        <EditUserModal
-          user={selectedUser}
-          onClose={() => { setShowEditModal(false); setSelectedUser(null); fetchUsers(); }}
-          onRefresh={() => refreshUser(selectedUser.id)}
-          accessToken={accessToken!}
-        />
-      )}
+      {showEditModal && selectedUser && <EditUserModal user={selectedUser} onClose={() => { setShowEditModal(false); setSelectedUser(null); }} onSuccess={() => { setShowEditModal(false); setSelectedUser(null); fetchUsers(); }} accessToken={accessToken!} />}
     </div>
   );
 }
 
-function CreateUserModal({ onClose, onSuccess, accessToken }: { onClose: () => void; onSuccess: () => void; accessToken: string }) {
+function CreateUserModal({ onClose, onSuccess, accessToken }: any) {
   const [form, setForm] = useState({ email: "", password: "", firstName: "", lastName: "" });
   const [submitting, setSubmitting] = useState(false);
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); setSubmitting(true);
-    try {
-      const res = await fetch("/api/gestion-sb/users", { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` }, body: JSON.stringify(form) });
-      if (res.ok) { toast.success("Client créé !"); onSuccess(); }
-      else { const d = await res.json(); toast.error(d.error || "Erreur"); }
-    } catch { toast.error("Erreur"); }
+    const res = await fetch("/api/gestion-sb/users", { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` }, body: JSON.stringify(form) });
+    if (res.ok) { toast.success("Client créé !"); onSuccess(); }
+    else { const d = await res.json(); toast.error(d.error || "Erreur"); }
     setSubmitting(false);
   };
   return (
@@ -137,7 +106,7 @@ function CreateUserModal({ onClose, onSuccess, accessToken }: { onClose: () => v
   );
 }
 
-function EditUserModal({ user, onClose, onRefresh, accessToken }: { user: any; onClose: () => void; onRefresh: () => void; accessToken: string }) {
+function EditUserModal({ user, onClose, onSuccess, accessToken }: any) {
   const [form, setForm] = useState({ firstName: user.firstName || "", lastName: user.lastName || "", email: user.email || "", phone: user.phone || "", status: user.status || "ACTIVE", password: "" });
   const [submitting, setSubmitting] = useState(false);
   const [savingId, setSavingId] = useState<string | null>(null);
@@ -147,13 +116,11 @@ function EditUserModal({ user, onClose, onRefresh, accessToken }: { user: any; o
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault(); setSubmitting(true);
-    try {
-      const body: any = { firstName: form.firstName, lastName: form.lastName, email: form.email, phone: form.phone, status: form.status };
-      if (form.password) body.password = form.password;
-      const res = await fetch(`/api/gestion-sb/users/${user.id}`, { method: "PUT", headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` }, body: JSON.stringify(body) });
-      if (res.ok) { toast.success("Utilisateur modifié !"); onClose(); }
-      else { const d = await res.json(); toast.error(d.error || "Erreur"); }
-    } catch { toast.error("Erreur"); }
+    const body: any = { firstName: form.firstName, lastName: form.lastName, email: form.email, phone: form.phone, status: form.status };
+    if (form.password) body.password = form.password;
+    const res = await fetch(`/api/gestion-sb/users/${user.id}`, { method: "PUT", headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` }, body: JSON.stringify(body) });
+    if (res.ok) { toast.success("Modifié !"); onSuccess(); }
+    else { const d = await res.json(); toast.error(d.error || "Erreur"); }
     setSubmitting(false);
   };
 
@@ -161,34 +128,20 @@ function EditUserModal({ user, onClose, onRefresh, accessToken }: { user: any; o
     setSavingId(portfolioId);
     const p = portfolios.find(p => p.id === portfolioId);
     if (!p) return;
-    try {
-      const res = await fetch(`/api/gestion-sb/portfolios/${portfolioId}`, { method: "PUT", headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` }, body: JSON.stringify({ balance: Number(p.balance), name: p.name }) });
-      if (res.ok) {
-        toast.success("Solde mis à jour !");
-        // Recharger les données de l'utilisateur
-        onRefresh();
-      } else toast.error("Erreur");
-    } catch { toast.error("Erreur"); }
+    const res = await fetch(`/api/gestion-sb/portfolios/${portfolioId}`, { method: "PUT", headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` }, body: JSON.stringify({ balance: Number(p.balance), name: p.name }) });
+    if (res.ok) toast.success("Solde mis à jour !");
+    else toast.error("Erreur");
     setSavingId(null);
   };
 
   const handleCreatePortfolio = async () => {
     if (!newPortfolio.name) return;
     setSavingId("new");
-    try {
-      const res = await fetch("/api/gestion-sb/portfolios", { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` }, body: JSON.stringify({ userId: user.id, name: newPortfolio.name, balance: Number(newPortfolio.balance) }) });
-      if (res.ok) {
-        toast.success("Portefeuille créé !");
-        setShowNewPortfolio(false);
-        setNewPortfolio({ name: "", balance: 0 });
-        onRefresh(); // Recharger les données
-      } else toast.error("Erreur");
-    } catch { toast.error("Erreur"); }
+    const res = await fetch("/api/gestion-sb/portfolios", { method: "POST", headers: { "Content-Type": "application/json", Authorization: `Bearer ${accessToken}` }, body: JSON.stringify({ userId: user.id, name: newPortfolio.name, balance: Number(newPortfolio.balance) }) });
+    if (res.ok) { toast.success("Portefeuille créé !"); const created = await res.json(); setPortfolios([...portfolios, created]); setShowNewPortfolio(false); setNewPortfolio({ name: "", balance: 0 }); }
+    else toast.error("Erreur");
     setSavingId(null);
   };
-
-  // Mettre à jour les portfolios quand l'utilisateur est rechargé
-  useEffect(() => { setPortfolios(user.portfolios || []); }, [user]);
 
   return (
     <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
@@ -198,12 +151,12 @@ function EditUserModal({ user, onClose, onRefresh, accessToken }: { user: any; o
           <div className="grid grid-cols-2 gap-3"><div><label className="text-xs text-gray-500">Prénom</label><Input value={form.firstName} onChange={e => setForm({...form, firstName: e.target.value})} /></div><div><label className="text-xs text-gray-500">Nom</label><Input value={form.lastName} onChange={e => setForm({...form, lastName: e.target.value})} /></div></div>
           <div><label className="text-xs text-gray-500">Email</label><Input type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} /></div>
           <div><label className="text-xs text-gray-500">Téléphone</label><Input value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} /></div>
-          <div><label className="text-xs text-gray-500">Statut</label><select value={form.status} onChange={e => setForm({...form, status: e.target.value})} className="w-full h-10 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-900 px-3 text-sm dark:text-white"><option value="ACTIVE">Actif</option><option value="INACTIVE">Inactif</option><option value="SUSPENDED">Suspendu</option><option value="LOCKED">Verrouillé</option></select></div>
+          <div><label className="text-xs text-gray-500">Statut</label><select value={form.status} onChange={e => setForm({...form, status: e.target.value})} className="w-full h-10 rounded-lg border px-3 text-sm dark:bg-gray-900 dark:text-white"><option value="ACTIVE">Actif</option><option value="INACTIVE">Inactif</option><option value="SUSPENDED">Suspendu</option><option value="LOCKED">Verrouillé</option></select></div>
           <div><label className="text-xs text-gray-500">Nouveau mot de passe</label><Input type="password" placeholder="Laisser vide = inchangé" value={form.password} onChange={e => setForm({...form, password: e.target.value})} /></div>
 
           <div className="bg-gray-50 dark:bg-gray-800 p-4 rounded-xl">
             <div className="flex items-center justify-between mb-3"><p className="text-sm font-semibold dark:text-white">💰 Portefeuilles</p><Button type="button" size="sm" variant="outline" onClick={() => setShowNewPortfolio(true)}><Plus size={14} className="mr-1" /> Ajouter</Button></div>
-            {portfolios.map((p, i) => (
+            {portfolios.map((p: any, i: number) => (
               <div key={p.id} className="flex items-center gap-2 mb-2">
                 <Input value={p.name} onChange={e => { const u = [...portfolios]; u[i].name = e.target.value; setPortfolios(u); }} className="text-sm w-36" />
                 <Input type="number" value={p.balance} onChange={e => { const u = [...portfolios]; u[i].balance = e.target.value; setPortfolios(u); }} className="text-sm w-28" />

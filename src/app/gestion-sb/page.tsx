@@ -42,8 +42,7 @@ export default function AdminDashboard() {
           <p className="text-gray-500 dark:text-gray-400 mt-1">Bienvenue sur votre espace d'administration</p>
         </div>
         <div className="flex gap-2">
-          <div className="relative"><Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" /><Input placeholder="Rechercher..." className="pl-10 w-48 md:w-64" /></div>
-          <Link href="/gestion-sb/utilisateurs"><Button size="sm"><Plus size={16} className="mr-1" /> Ajouter</Button></Link>
+          <Link href="/gestion-sb/utilisateurs"><Button size="sm"><Plus size={16} className="mr-1" /> Nouveau client</Button></Link>
         </div>
       </div>
 
@@ -65,14 +64,13 @@ export default function AdminDashboard() {
         <CardContent>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
-              <thead><tr className="border-b text-left text-gray-500 dark:text-gray-400"><th className="pb-3 font-medium">Client</th><th className="pb-3 font-medium">Statut</th><th className="pb-3 font-medium text-right">Portefeuille</th><th className="pb-3 font-medium text-right">Actions</th></tr></thead>
+              <thead><tr className="border-b text-left text-gray-500 dark:text-gray-400"><th className="pb-3 font-medium">Client</th><th className="pb-3 font-medium">Statut</th><th className="pb-3 font-medium text-right">Portefeuille</th></tr></thead>
               <tbody className="divide-y dark:divide-gray-800">
                 {data?.recentUsers?.map((u: any) => (
                   <tr key={u.id} className="hover:bg-gray-50 dark:hover:bg-gray-800">
                     <td className="py-3"><div className="flex items-center gap-3"><div className="w-8 h-8 rounded-lg bg-primary-100 dark:bg-primary-900/30 flex items-center justify-center text-primary-700 dark:text-primary-400 font-bold text-xs">{u.firstName[0]}{u.lastName[0]}</div><div><p className="font-medium dark:text-white">{u.firstName} {u.lastName}</p><p className="text-gray-400 text-xs">{u.email}</p></div></div></td>
                     <td className="py-3">{getBadge(u.status)}</td>
                     <td className="py-3 text-right font-medium dark:text-white">{formatCurrency(u.portfolio || 0)}</td>
-                    <td className="py-3 text-right"><Eye size={16} className="inline text-gray-400 hover:text-primary-700 cursor-pointer" /></td>
                   </tr>
                 ))}
               </tbody>
