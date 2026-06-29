@@ -21,15 +21,28 @@ export default function ProfilPage() {
     <div className="container mx-auto px-4 py-8">
       <h1 className="text-3xl font-bold mb-8">Profil</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card><CardHeader><CardTitle className="flex items-center gap-2"><User size={20} /> Informations</CardTitle></CardHeader><CardContent className="space-y-3">
-          <p><span className="font-medium">Nom :</span> {profile?.firstName} {profile?.lastName}</p>
-          <p className="flex items-center gap-2"><Mail size={16} className="text-gray-400" /> {profile?.email}</p>
-          <p><span className="font-medium">Rôle :</span> <Badge variant="outline">{profile?.role}</Badge></p>
-        </CardContent></Card>
-        <Card><CardHeader><CardTitle className="flex items-center gap-2"><Shield size={20} /> Sécurité</CardTitle></CardHeader><CardContent className="space-y-3">
-          <p className="flex items-center gap-2"><Badge variant={profile?.status === "ACTIVE" ? "success" : "warning"}>{profile?.status === "ACTIVE" ? "Actif" : profile?.status}</Badge></p>
-          {profile?.lastLoginAt && <p className="flex items-center gap-2"><Clock size={16} className="text-gray-400" /> Dernière connexion : {formatDate(profile.lastLoginAt)}</p>}
-        </CardContent></Card>
+        <Card>
+          <CardHeader><CardTitle className="flex items-center gap-2"><User size={20} /> Informations</CardTitle></CardHeader>
+          <CardContent className="space-y-3">
+            <div><span className="font-medium">Nom :</span> {profile?.firstName} {profile?.lastName}</div>
+            <div className="flex items-center gap-2"><Mail size={16} className="text-gray-400" /> {profile?.email}</div>
+            <div className="flex items-center gap-2">
+              <span className="font-medium">Rôle :</span>
+              <Badge variant="outline">{profile?.role}</Badge>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader><CardTitle className="flex items-center gap-2"><Shield size={20} /> Sécurité</CardTitle></CardHeader>
+          <CardContent className="space-y-3">
+            <div className="flex items-center gap-2">
+              <Badge variant={profile?.status === "ACTIVE" ? "success" : "warning"}>{profile?.status === "ACTIVE" ? "Actif" : profile?.status}</Badge>
+            </div>
+            {profile?.lastLoginAt && (
+              <div className="flex items-center gap-2"><Clock size={16} className="text-gray-400" /> Dernière connexion : {formatDate(profile.lastLoginAt)}</div>
+            )}
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
