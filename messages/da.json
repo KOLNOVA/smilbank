@@ -1,0 +1,71 @@
+{
+  "common": {
+    "siteName": "SmilBank",
+    "tagline": "Din finansielle partner",
+    "login": "Log ind",
+    "logout": "Log ud",
+    "contact": "Kontakt",
+    "services": "Tjenester",
+    "products": "Produkter",
+    "news": "Nyheder",
+    "dashboard": "Dashboard",
+    "portfolio": "Portefølje",
+    "contracts": "Kontrakter",
+    "investments": "Investeringer",
+    "documents": "Dokumenter",
+    "profile": "Profil",
+    "admin": "Administration",
+    "language": "Sprog"
+  },
+  "home": {
+    "heroTitle": "Vi bygger din finansielle fremtid",
+    "heroSubtitle": "Investerings-, kredit- og forsikringsløsninger designet til at give dig sikkerhed og performance.",
+    "cta": "Bestil et møde",
+    "discover": "Oplev vores tjenester",
+    "stats": {
+      "clients": "Kunder",
+      "underManagement": "Under forvaltning",
+      "satisfaction": "Tilfredshed",
+      "experience": "Erfaring"
+    }
+  },
+  "auth": {
+    "welcome": "Velkommen",
+    "loginTitle": "Log ind på dit sikre kundeområde.",
+    "email": "E-mail",
+    "password": "Adgangskode",
+    "loginButton": "Log ind",
+    "noAccount": "Har du ikke en konto?",
+    "contactUs": "Kontakt os",
+    "secureSpace": "Dit sikre område"
+  },
+  "dashboard": {
+    "greeting": "Hej",
+    "balance": "Saldo",
+    "totalInvested": "Samlet investeret",
+    "activeContracts": "Aktive kontrakter",
+    "overallReturn": "Samlet afkast",
+    "recentOperations": "Seneste transaktioner",
+    "upcomingDeadlines": "Kommende deadlines",
+    "noOperations": "Ingen seneste transaktioner",
+    "noDeadlines": "Ingen kommende deadlines"
+  },
+  "admin": {
+    "overview": "Overblik",
+    "users": "Brugere",
+    "totalClients": "Samlede kunder",
+    "underManagement": "Under forvaltning",
+    "recentClients": "Seneste kunder",
+    "newClient": "Ny kunde",
+    "createClient": "Opret kunde",
+    "firstName": "Fornavn",
+    "lastName": "Efternavn",
+    "currency": "Valuta",
+    "initialBalance": "Startsaldo",
+    "status": "Status",
+    "active": "Aktiv",
+    "inactive": "Inaktiv",
+    "suspended": "Suspenderet",
+    "locked": "Låst"
+  }
+}

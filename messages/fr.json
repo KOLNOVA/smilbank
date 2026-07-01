@@ -1,0 +1,71 @@
+{
+  "common": {
+    "siteName": "SmilBank",
+    "tagline": "Votre partenaire financier",
+    "login": "Se connecter",
+    "logout": "Déconnexion",
+    "contact": "Contact",
+    "services": "Services",
+    "products": "Produits",
+    "news": "Actualités",
+    "dashboard": "Tableau de bord",
+    "portfolio": "Portefeuille",
+    "contracts": "Contrats",
+    "investments": "Investissements",
+    "documents": "Documents",
+    "profile": "Profil",
+    "admin": "Administration",
+    "language": "Langue"
+  },
+  "home": {
+    "heroTitle": "Construisons votre avenir financier",
+    "heroSubtitle": "Des solutions d'investissement, de crédit et d'assurance conçues pour vous offrir sécurité et performance.",
+    "cta": "Prendre rendez-vous",
+    "discover": "Découvrir nos services",
+    "stats": {
+      "clients": "Clients",
+      "underManagement": "Sous gestion",
+      "satisfaction": "Satisfaction",
+      "experience": "Expérience"
+    }
+  },
+  "auth": {
+    "welcome": "Bienvenue",
+    "loginTitle": "Connectez-vous à votre espace client sécurisé.",
+    "email": "Email",
+    "password": "Mot de passe",
+    "loginButton": "Se connecter",
+    "noAccount": "Pas encore de compte ?",
+    "contactUs": "Contactez-nous",
+    "secureSpace": "Votre espace sécurisé"
+  },
+  "dashboard": {
+    "greeting": "Bonjour",
+    "balance": "Solde",
+    "totalInvested": "Total investi",
+    "activeContracts": "Contrats actifs",
+    "overallReturn": "Rendement global",
+    "recentOperations": "Opérations récentes",
+    "upcomingDeadlines": "Échéances à venir",
+    "noOperations": "Aucune opération récente",
+    "noDeadlines": "Aucune échéance à venir"
+  },
+  "admin": {
+    "overview": "Vue d'ensemble",
+    "users": "Utilisateurs",
+    "totalClients": "Total clients",
+    "underManagement": "Sous gestion",
+    "recentClients": "Clients récents",
+    "newClient": "Nouveau client",
+    "createClient": "Créer un client",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "currency": "Devise",
+    "initialBalance": "Solde initial",
+    "status": "Statut",
+    "active": "Actif",
+    "inactive": "Inactif",
+    "suspended": "Suspendu",
+    "locked": "Verrouillé"
+  }
+}

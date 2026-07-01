@@ -1,0 +1,71 @@
+{
+  "common": {
+    "siteName": "SmilBank",
+    "tagline": "Your Financial Partner",
+    "login": "Login",
+    "logout": "Logout",
+    "contact": "Contact",
+    "services": "Services",
+    "products": "Products",
+    "news": "News",
+    "dashboard": "Dashboard",
+    "portfolio": "Portfolio",
+    "contracts": "Contracts",
+    "investments": "Investments",
+    "documents": "Documents",
+    "profile": "Profile",
+    "admin": "Administration",
+    "language": "Language"
+  },
+  "home": {
+    "heroTitle": "Building your financial future",
+    "heroSubtitle": "Investment, credit and insurance solutions designed to offer you security and performance.",
+    "cta": "Make an appointment",
+    "discover": "Discover our services",
+    "stats": {
+      "clients": "Clients",
+      "underManagement": "Under Management",
+      "satisfaction": "Satisfaction",
+      "experience": "Experience"
+    }
+  },
+  "auth": {
+    "welcome": "Welcome",
+    "loginTitle": "Log in to your secure client area.",
+    "email": "Email",
+    "password": "Password",
+    "loginButton": "Login",
+    "noAccount": "Don't have an account?",
+    "contactUs": "Contact us",
+    "secureSpace": "Your secure space"
+  },
+  "dashboard": {
+    "greeting": "Hello",
+    "balance": "Balance",
+    "totalInvested": "Total Invested",
+    "activeContracts": "Active Contracts",
+    "overallReturn": "Overall Return",
+    "recentOperations": "Recent Operations",
+    "upcomingDeadlines": "Upcoming Deadlines",
+    "noOperations": "No recent operations",
+    "noDeadlines": "No upcoming deadlines"
+  },
+  "admin": {
+    "overview": "Overview",
+    "users": "Users",
+    "totalClients": "Total Clients",
+    "underManagement": "Under Management",
+    "recentClients": "Recent Clients",
+    "newClient": "New Client",
+    "createClient": "Create Client",
+    "firstName": "First Name",
+    "lastName": "Last Name",
+    "currency": "Currency",
+    "initialBalance": "Initial Balance",
+    "status": "Status",
+    "active": "Active",
+    "inactive": "Inactive",
+    "suspended": "Suspended",
+    "locked": "Locked"
+  }
+}

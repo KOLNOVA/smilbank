@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/theme-toggle";
+import { LanguageSwitcher } from "@/components/theme-toggle";
 import { Logo } from "@/components/ui/logo";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
@@ -36,14 +36,14 @@ export function PublicHeader() {
         </nav>
 
         <div className="hidden md:flex items-center gap-3">
-          <ThemeToggle />
+          <LanguageSwitcher />
           <Link href="/connexion">
             <Button variant="outline" size="sm">Espace Client</Button>
           </Link>
         </div>
 
         <div className="flex md:hidden items-center gap-2">
-          <ThemeToggle />
+          <LanguageSwitcher />
           <button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800" onClick={() => setMobileOpen(!mobileOpen)}>
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
