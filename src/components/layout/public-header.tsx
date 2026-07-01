@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { LanguageSwitcher } from "@/components/theme-toggle";
+import { LanguageSwitcher } from "@/components/language-switcher";
 import { Logo } from "@/components/ui/logo";
 import { useState, useEffect } from "react";
 import { Menu, X } from "lucide-react";
@@ -25,13 +25,13 @@ export function PublicHeader() {
   ];
 
   return (
-    <header className={`sticky top-0 z-50 transition-all duration-300 border-b ${scrolled ? "bg-white/95 dark:bg-gray-950/95 backdrop-blur shadow-sm border-gray-200 dark:border-gray-800" : "bg-white dark:bg-gray-950 border-transparent"}`}>
+    <header className={`sticky top-0 z-50 transition-all duration-300 border-b ${scrolled ? "bg-white/95 backdrop-blur shadow-sm border-gray-200" : "bg-white border-transparent"}`}>
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <Logo size="md" />
 
         <nav className="hidden md:flex items-center gap-6 lg:gap-8">
           {links.map(l => (
-            <Link key={l.n} href={l.h} className="text-sm font-medium text-gray-600 dark:text-gray-300 hover:text-primary-700 dark:hover:text-primary-400 transition-colors">{l.n}</Link>
+            <Link key={l.n} href={l.h} className="text-sm font-medium text-gray-600 hover:text-primary-700 transition-colors">{l.n}</Link>
           ))}
         </nav>
 
@@ -44,17 +44,17 @@ export function PublicHeader() {
 
         <div className="flex md:hidden items-center gap-2">
           <LanguageSwitcher />
-          <button className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800" onClick={() => setMobileOpen(!mobileOpen)}>
+          <button className="p-2 rounded-lg hover:bg-gray-100" onClick={() => setMobileOpen(!mobileOpen)}>
             {mobileOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
         </div>
       </div>
 
       {mobileOpen && (
-        <div className="md:hidden border-t border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950 shadow-lg">
+        <div className="md:hidden border-t border-gray-200 bg-white shadow-lg">
           <div className="p-4 flex flex-col gap-2">
             {links.map(l => (
-              <Link key={l.n} href={l.h} onClick={() => setMobileOpen(false)} className="py-3 px-4 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 text-base font-medium">
+              <Link key={l.n} href={l.h} onClick={() => setMobileOpen(false)} className="py-3 px-4 rounded-lg text-gray-700 hover:bg-gray-50 text-base font-medium">
                 {l.n}
               </Link>
             ))}

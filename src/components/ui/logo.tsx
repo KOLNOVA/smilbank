@@ -31,8 +31,8 @@ export function Logo({ size = "md", className = "", inverse = false }: LogoProps
           priority
         />
       </div>
-      <span className={`font-heading font-bold ${s.text} ${inverse ? "text-white" : "text-gray-900 dark:text-white"}`}>
-        Smil<span className={`${inverse ? "text-blue-300" : "text-primary-700 dark:text-primary-400"}`}>Bank</span>
+      <span className={`font-heading font-bold ${s.text} ${inverse ? "text-white" : "text-gray-900"}`}>
+        Smil<span className={`${inverse ? "text-blue-300" : "text-primary-700"}`}>Bank</span>
       </span>
     </Link>
   );

@@ -29,28 +29,10 @@
 
 @layer base {
   body {
-    @apply bg-white dark:bg-gray-950 text-gray-800 dark:text-gray-200 antialiased;
+    @apply bg-white text-gray-800 antialiased;
     font-family: var(--font-sans);
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-heading);
-  }
-
-  /* Scrollbar */
-  ::-webkit-scrollbar {
-    width: 6px;
-  }
-  ::-webkit-scrollbar-track {
-    @apply bg-transparent;
-  }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-gray-300 dark:bg-gray-700 rounded-full;
-  }
-}
-
-/* Utilitaires dark mode pour les composants */
-@utility dark {
-  .card-dark {
-    @apply bg-gray-900 border-gray-800;
   }
 }
